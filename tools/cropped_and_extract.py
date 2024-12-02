@@ -20,7 +20,9 @@ def segment_image(original_image_path, mask_image_path, output_image_path):
         bool: True if successful, False otherwise.
     '''
     original_image = cv2.imread(original_image_path)
+    original_image = cv2.resize(original_image, (512, 512))
     mask_image = cv2.imread(mask_image_path, cv2.IMREAD_GRAYSCALE)
+    mask_image = cv2.resize(mask_image, (512, 512))
 
     if original_image is None or mask_image is None:
         print(f"Error reading image or mask for {original_image_path}")
