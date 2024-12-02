@@ -52,17 +52,17 @@ def get_patient_ids(feature_path, excel_file_path, sheet_name):
 
     return patient_ids
 
-# need to change the names of the body parts
-feature_path = 'C:/Users/administer/Desktop/AI_Global/Data/Right_Fingernail_files/image_features.csv'
-excel_file_path = 'C:/Users/administer/Desktop/AI_Global/Data/Anemia_dataset_train.xlsx'
-sheet_name = 'Right_Finger_Nail_Data'
+# # need to change the names of the body parts
+# feature_path = 'C:/Users/administer/Desktop/AI_Global/Data/Left_Palm_files/image_features.csv'
+# excel_file_path = 'C:/Users/administer/Desktop/AI_Global/Data/Anemia_dataset_train.xlsx'
+# sheet_name = 'Left_Palm_Data'
 
-existing_data = pd.read_csv(feature_path)
+# existing_data = pd.read_csv(feature_path)
 
-patient_ids = get_patient_ids(feature_path, excel_file_path, sheet_name)
-df_patient_ids = pd.DataFrame(patient_ids, columns=['Blood Sample ID'])
-existing_data = pd.concat([existing_data, df_patient_ids], axis=1)
-existing_data.to_csv(feature_path, index=False)
+# patient_ids = get_patient_ids(feature_path, excel_file_path, sheet_name)
+# df_patient_ids = pd.DataFrame(patient_ids, columns=['Blood Sample ID'])
+# existing_data = pd.concat([existing_data, df_patient_ids], axis=1)
+# existing_data.to_csv(feature_path, index=False)
 
 
 
@@ -96,18 +96,21 @@ def merge_feature_files(file_list, key_column, output_file):
 path1 = 'C:/Users/administer/Desktop/AI_Global/Data/Left_eye_files/image_features.csv'
 path2 = 'C:/Users/administer/Desktop/AI_Global/Data/Left_Palm_files/image_features.csv'
 path3 = 'C:/Users/administer/Desktop/AI_Global/Data/Right_Fingernail_files/image_features.csv'
+path4 = 'C:/Users/administer/Desktop/AI_Global/Data/Left_Fingernail_files/image_features.csv'
+path5 = 'C:/Users/administer/Desktop/AI_Global/Data/Right_Palm_files/image_features.csv'
+path6 = 'C:/Users/administer/Desktop/AI_Global/Data/Right_eye_files/image_features.csv'
 
-csv_files = [path1, path2, path3]
+csv_files = [path1, path2, path3, path4, path5, path6]
 key_column = 'Blood Sample ID'
 output_csv = 'C:/Users/administer/Desktop/AI_Global/Data/combined_features.csv'
-# merge_feature_files(csv_files, key_column, output_csv)
+merge_feature_files(csv_files, key_column, output_csv)
 
 df_metadata = pd.read_excel('C:/Users/administer/Desktop/AI_Global/Data/Anemia_dataset_train.xlsx', sheet_name='Sheet1')
 df_metadata = df_metadata.drop(columns=['index', 'Total Serial Number', 'S No.', 'Unique ID'])
 print(df_metadata.head())
 
 df_features = pd.read_csv('C:/Users/administer/Desktop/AI_Global/Data/combined_features.csv')
-df_features = df_features.dropna(subset=['Average left eye R', 'Average left palm R', 'Average right nail R'])
+df_features = df_features.dropna(subset=['Average left eye R', 'Average left palm R', 'Average right nail R', 'Average left fingernail R', 'Average right palm R', 'Average right eye R'])
 print(np.shape(df_features))
 
 df_metadata = pd.merge(df_metadata, df_features, on='Blood Sample ID', how='outer')
